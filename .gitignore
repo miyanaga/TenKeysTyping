@@ -1,0 +1,5 @@
+.build/
+.swiftpm/
+TenKeysTyping.app/
+*.xcodeproj
+.DS_Store
