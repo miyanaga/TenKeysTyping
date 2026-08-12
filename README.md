@@ -11,8 +11,10 @@
 ## ビルドと起動
 
 ```bash
-./build.sh          # リリースビルドして TenKeysTyping.app を生成
-./build.sh --run    # ビルドして起動
+./build.sh              # リリースビルドして TenKeysTyping.app を生成
+./build.sh --run        # ビルドして起動
+./build.sh --install    # /Applications へインストール
+./build.sh --out ~/Downloads   # 指定ディレクトリへ配置
 open TenKeysTyping.app
 ```
 
@@ -20,6 +22,22 @@ open TenKeysTyping.app
 
 `swift run` でも起動できますが、アプリバンドル経由（`./build.sh`）のほうが
 メニューバーやキーボードフォーカスの挙動が安定します。
+
+`/Applications` は管理者グループに書き込み権があるため、通常 `sudo` は不要です。
+権限がない環境では `--out ~/Downloads` で書き出して手動でコピーしてください。
+
+## アイコン
+
+`Resources/icon/source.svg`（元イラスト）から `Resources/AppIcon.icns` を生成します。
+
+```bash
+./Resources/icon/make-icon.sh
+```
+
+`compose.py` が 1024×1024 の角丸スクエア（スーパー楕円）にイラストを配置した
+`AppIcon.svg` を組み立て、QuickLook(WebKit) でラスタライズして `sips` / `iconutil` で
+`.icns` にまとめます。イラストや配色を変えたらこのスクリプトを再実行してください
+（`build.sh` は `.icns` が無いときだけ自動生成します）。
 
 ## 遊びかた
 

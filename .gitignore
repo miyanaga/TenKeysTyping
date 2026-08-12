@@ -3,3 +3,4 @@
 TenKeysTyping.app/
 *.xcodeproj
 .DS_Store
+Resources/icon/AppIcon.svg

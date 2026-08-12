@@ -8,6 +8,8 @@ TenKeysTyping — テンキー操作訓練用の macOS ネイティブアプリ�
 swift build -c release   # コンパイルのみ
 ./build.sh               # .app バンドルまで生成
 ./build.sh --run         # 生成して起動
+./build.sh --install     # /Applications へ配置（sudo 不要）
+./build.sh --out <dir>   # 任意のディレクトリへ配置
 ```
 
 `swift run` は動くが、キーボードフォーカスやメニューの挙動はバンドル経由のほうが安定する。
@@ -25,6 +27,10 @@ swift build -c release   # コンパイルのみ
   keyCode → 文字の対応は `KeyMapper`。テンキーとメインキーボードを区別する。
 - **効果音はファイルを持たない**。`Synth` で波形を合成し、`SoundEngine` が
   AVAudioPlayerNode 8本のプールへラウンドロビンで流す。正解音はコンボ段階で音程が上がる。
+- **アイコンは SVG から生成する**。`Resources/icon/source.svg` を `compose.py` が
+  1024px の角丸スクエア（スーパー楕円 n=5、Apple のアイコングリッド 824/1024）へ
+  合成し、`make-icon.sh` が QuickLook でラスタライズして `Resources/AppIcon.icns` を作る。
+  ImageMagick の内蔵 SVG レンダラは品質が不安定なので使わない。
 - **表示と打鍵対象を分離**。`Problem.display` は桁区切りや `×` `÷` などの表示専用要素を含み、
   `targetIndex` が nil の要素は打鍵対象ではない。色分けは AttributedString で行う。
 
@@ -36,6 +42,7 @@ swift build -c release   # コンパイルのみ
 | キー割り当て | README.md のキー表、HomeView 下部のヒント文、NumpadGuide |
 | 記録する指標（SessionRecord） | ResultView のタイル、StatsView のグラフ・一覧、README |
 | 保存形式 | `HistoryStore`（旧 JSON の読み込み互換に注意） |
+| アイコン・元イラスト | `Resources/icon/` を編集して `make-icon.sh` を再実行、README のアイコン節 |
 
 記録ファイルは `~/Library/Application Support/TenKeysTyping/history.json`。
 `SessionRecord` にフィールドを足すときは、既存 JSON がデコードできるよう
